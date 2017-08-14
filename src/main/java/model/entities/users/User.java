@@ -2,6 +2,7 @@ package model.entities.users;
 
 import model.entities.incomes.Income;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public class User {
     private String email;
     private String password;
 
-    private List<Income> userIncomes;
+    private List<Income> userIncomes = new ArrayList<>();
 
     User(String email, String password){
         this.email = email;

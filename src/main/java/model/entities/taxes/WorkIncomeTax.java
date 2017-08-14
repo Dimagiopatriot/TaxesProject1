@@ -10,7 +10,7 @@ public class WorkIncomeTax extends Tax implements TaxCalculator {
 
     private double militaryCharge;
 
-    WorkIncomeTax(WorkIncome workIncome, double taxPercent, double militaryCharge) {
+    public WorkIncomeTax(WorkIncome workIncome, double taxPercent, double militaryCharge) {
         super(workIncome, taxPercent);
         this.militaryCharge = militaryCharge;
     }

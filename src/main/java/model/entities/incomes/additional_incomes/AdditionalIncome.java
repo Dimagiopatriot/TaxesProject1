@@ -8,6 +8,7 @@ import model.entities.incomes.Income;
 public class AdditionalIncome extends Income {
 
     AdditionalIncome(){
+        super();
         isPerMonth = false;
     }
 

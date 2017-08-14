@@ -5,8 +5,16 @@ package model.entities.incomes;
  */
 public class Income {
 
+    private int id;
     private double income;
     protected boolean isPerMonth;
+    int taxId;
+    int userId;
+    private String name;
+
+    public Income(){
+        name = getClass().getSimpleName();
+    }
 
     public double getIncome() {
         return income;
@@ -22,5 +30,9 @@ public class Income {
 
     public void setPerMonth(boolean perMonth) {
         isPerMonth = perMonth;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -8,6 +8,7 @@ import model.entities.incomes.Income;
 public class WorkIncome extends Income {
 
     WorkIncome(){
+        super();
         isPerMonth = true;
     }
 

@@ -8,13 +8,16 @@ import model.entities.utils.Constants;
  */
 public class Tax implements TaxCalculator{
 
+    private int id;
     Income income;
     double taxPercent;
     double taxNeedToPay;
+    private String name;
 
     Tax(Income income, double taxPercent){
         this.income = income;
         this.taxPercent = taxPercent;
+        name = getClass().getSimpleName();
     }
 
     public double getTaxNeedToPay() {
@@ -31,5 +34,9 @@ public class Tax implements TaxCalculator{
 
     public void calculateTax() {
         taxNeedToPay = (income.getIncome() * taxPercent) / Constants.HUNDRED;
+    }
+
+    public String getName() {
+        return name;
     }
 }

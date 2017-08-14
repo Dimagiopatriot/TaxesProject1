@@ -7,7 +7,7 @@ import model.entities.incomes.additional_incomes.TransferIncome;
  */
 public class TransferIncomeTax extends Tax implements TaxCalculator {
 
-    TransferIncomeTax(TransferIncome transferIncome, double taxPercent){
+    public TransferIncomeTax(TransferIncome transferIncome, double taxPercent){
        super(transferIncome, taxPercent);
     }
 }
