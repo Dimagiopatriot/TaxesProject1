@@ -7,5 +7,6 @@ public class Admin extends User{
 
     Admin(String email, String password) {
         super(email, password);
+        isAdmin = true;
     }
 }

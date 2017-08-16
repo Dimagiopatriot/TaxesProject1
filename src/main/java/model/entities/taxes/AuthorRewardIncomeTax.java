@@ -1,6 +1,6 @@
 package model.entities.taxes;
 
-import model.entities.incomes.additional_incomes.AuthorRewardIncome;
+import model.entities.incomes.Income;
 import model.entities.utils.Constants;
 
 /**
@@ -10,7 +10,7 @@ public class AuthorRewardIncomeTax extends Tax {
 
     private double militaryCharge;
 
-    AuthorRewardIncomeTax(AuthorRewardIncome authorRewardIncome, double taxPercent, double militaryCharge) {
+    AuthorRewardIncomeTax(Income authorRewardIncome, double taxPercent, double militaryCharge) {
         super(authorRewardIncome, taxPercent);
         this.militaryCharge = militaryCharge;
     }

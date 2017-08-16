@@ -1,6 +1,6 @@
 package model.entities.taxes;
 
-import model.entities.incomes.work_incomes.WorkIncome;
+import model.entities.incomes.WorkIncome;
 import model.entities.utils.Constants;
 
 /**

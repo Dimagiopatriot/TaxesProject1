@@ -14,7 +14,7 @@ public class Tax implements TaxCalculator{
     double taxNeedToPay;
     private String name;
 
-    Tax(Income income, double taxPercent){
+    public Tax(Income income, double taxPercent){
         this.income = income;
         this.taxPercent = taxPercent;
         name = getClass().getSimpleName();
@@ -38,5 +38,13 @@ public class Tax implements TaxCalculator{
 
     public String getName() {
         return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

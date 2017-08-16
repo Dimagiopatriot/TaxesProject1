@@ -1,14 +1,13 @@
 package model.entities.taxes;
 
-import model.entities.incomes.additional_incomes.ChildrenDiscountIncome;
-import model.entities.utils.Constants;
+import model.entities.incomes.Income;
 
 /**
  * Created by troll on 14.08.2017.
  */
 public class ChildrenDiscountIncomeTax extends Tax {
 
-    ChildrenDiscountIncomeTax(ChildrenDiscountIncome childrenDiscountIncome, double taxPercent){
+    ChildrenDiscountIncomeTax(Income childrenDiscountIncome, double taxPercent){
         super(childrenDiscountIncome, taxPercent);
     }
 }
