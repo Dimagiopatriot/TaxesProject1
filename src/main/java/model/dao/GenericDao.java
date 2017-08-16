@@ -5,8 +5,8 @@ package model.dao;
  */
 public interface GenericDao<T> {
 
-    void delete(String query);
-    void update(String query);
-    void insert(String query);
-    T select(String query);
+    void delete(int id);
+    void update(T t);
+    void insert(T t);
+    T select(int id);
 }
