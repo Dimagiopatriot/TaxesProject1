@@ -7,9 +7,9 @@ public class Income {
 
     private int id;
     private double income;
-    protected boolean isPerMonth;
-    int taxId;
-    int userId;
+    boolean isPerMonth;
+    private int taxId;
+    private int userId;
     private String name;
 
     public Income(){
@@ -34,5 +34,33 @@ public class Income {
 
     public String getName() {
         return name;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getTaxId() {
+        return taxId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTaxId(int taxId) {
+        this.taxId = taxId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
     }
 }
