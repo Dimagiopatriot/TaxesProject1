@@ -9,15 +9,12 @@ import model.entities.utils.Constants;
 public class Tax implements TaxCalculator{
 
     private int id;
-    Income income;
     double taxPercent;
     double taxNeedToPay;
     private String name;
 
-    public Tax(Income income, double taxPercent){
-        this.income = income;
+    public Tax(double taxPercent){
         this.taxPercent = taxPercent;
-        name = getClass().getSimpleName();
     }
 
     public double getTaxNeedToPay() {
@@ -32,8 +29,12 @@ public class Tax implements TaxCalculator{
         this.taxPercent = taxPercent;
     }
 
-    public void calculateTax() {
-        taxNeedToPay = (income.getIncome() * taxPercent) / Constants.HUNDRED;
+    public void calculateTax(Income income) {
+        if (!income.isPerMonth()) {
+            taxNeedToPay = (income.getIncome() * taxPercent) / Constants.HUNDRED;
+        } else if (income.isPerMonth()){
+            taxNeedToPay = Constants.MONTHS_IN_YEAR * ((income.getIncome() * taxPercent) / Constants.HUNDRED);
+        }
     }
 
     public String getName() {
@@ -47,4 +48,10 @@ public class Tax implements TaxCalculator{
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 }
