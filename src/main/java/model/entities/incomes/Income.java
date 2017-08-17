@@ -12,10 +12,6 @@ public class Income {
     private int userId;
     private String name;
 
-    public Income(){
-        name = getClass().getSimpleName();
-    }
-
     public double getIncome() {
         return income;
     }
