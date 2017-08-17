@@ -8,6 +8,7 @@ import model.entities.incomes.IncomeBuilder;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by troll on 16.08.2017.
@@ -74,14 +75,14 @@ public class IncomeDao implements IncomeDaoInterface {
     }
 
     @Override
-    public Income select(int id) {
-        Income income = new Income();
+    public Optional<Income> select(int id) {
+        Optional<Income> income = Optional.empty();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_QUERY)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
-            income = buildIncome(resultSet);
+            income = Optional.of(buildIncome(resultSet));
         } catch (SQLException e) {
             e.printStackTrace();
         }

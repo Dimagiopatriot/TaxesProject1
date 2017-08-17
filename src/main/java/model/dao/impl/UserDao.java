@@ -6,6 +6,7 @@ import model.entities.users.User;
 import model.entities.users.UserBuilder;
 
 import java.sql.*;
+import java.util.Optional;
 
 /**
  * Created by troll on 16.08.2017.
@@ -67,14 +68,14 @@ public class UserDao implements UserDaoInterface {
     }
 
     @Override
-    public User select(int id) {
-        User user = new User("", "");
+    public Optional<User> select(int id) {
+        Optional<User> user = Optional.empty();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_QUERY)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
-            user = buildUser(resultSet);
+            user = Optional.of(buildUser(resultSet));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,15 +84,15 @@ public class UserDao implements UserDaoInterface {
     }
 
     @Override
-    public User selectByEmailPassword(String email, String password) {
-        User user = new User("", "");
+    public Optional<User> selectByEmailPassword(String email, String password) {
+        Optional<User> user = Optional.empty();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_EMAIL_PASS_QUERY)) {
             statement.setString(1, email);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
 
-            user = buildUser(resultSet);
+            user = Optional.of(buildUser(resultSet));
         } catch (SQLException e) {
             e.printStackTrace();
         }

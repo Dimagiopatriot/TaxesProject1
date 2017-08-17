@@ -2,11 +2,11 @@ package model.dao.impl;
 
 import model.dao.GenericDao;
 import model.dao.connection.SQLConnector;
-import model.entities.incomes.Income;
 import model.entities.taxes.Tax;
 import model.entities.taxes.TaxBuilder;
 
 import java.sql.*;
+import java.util.Optional;
 
 /**
  * Created by troll on 16.08.2017.
@@ -64,14 +64,14 @@ public class TaxDao implements GenericDao<Tax> {
     }
 
     @Override
-    public Tax select(int id) {
-        Tax income = new Tax(0);
+    public Optional<Tax> select(int id) {
+        Optional<Tax> income = Optional.empty();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_QUERY)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
-            income = buildTax(resultSet);
+            income = Optional.of(buildTax(resultSet));
         } catch (SQLException e) {
             e.printStackTrace();
         }
