@@ -65,7 +65,7 @@ public class TaxDao implements GenericDao<Tax> {
 
     @Override
     public Tax select(int id) {
-        Tax income = new Tax(new Income(), 0);
+        Tax income = new Tax(0);
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_QUERY)) {
             statement.setInt(1, id);
