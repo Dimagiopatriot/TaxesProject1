@@ -16,27 +16,20 @@ import java.util.Optional;
 public class IncomeDao implements IncomeDaoInterface {
 
     private static final String DELETE_QUERY = "DELETE from firstproject.income WHERE id=?;";
-    private static final String UPDATE_QUERY = "UPDATE firstproject.income SET name=?, isPerMonth=?, income=? userId=?, " +
+    private static final String UPDATE_QUERY = "UPDATE firstproject.income SET name=?, isPerMonth=?, income=?, userId=?, " +
             "taxId=? WHERE id=?;";
     private static final String INSERT_QUERY = "INSERT INTO firstproject.income(name, isPerMonth, income, userId, taxId) " +
             "VALUES(?, ?, ?, ?, ?);";
-    private static final String SELECT_QUERY = "SELECT FROM firstproject.income WHERE id=?;";
+    private static final String SELECT_QUERY = "SELECT * FROM firstproject.income WHERE id=?;";
     private static final String SELECT_EMAIL_PASS_QUERY = "SELECT * FROM firstproject.income WHERE userId=?";
 
-    @Override
-    public void delete(int id) {
-        try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)){
-
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public boolean delete(int id){
+        return delete(id, DELETE_QUERY);
     }
 
     @Override
-    public void update(Income income) {
+    public boolean update(Income income) {
+        boolean result;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)){
 
@@ -47,13 +40,17 @@ public class IncomeDao implements IncomeDaoInterface {
             statement.setInt(5, income.getTaxId());
             statement.setInt(6, income.getId());
             statement.executeUpdate();
+            result = true;
         } catch (SQLException e) {
             e.printStackTrace();
+            result = false;
         }
+        return result;
     }
 
     @Override
-    public void insert(Income income) {
+    public boolean insert(Income income) {
+        boolean result;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
 
@@ -63,6 +60,7 @@ public class IncomeDao implements IncomeDaoInterface {
             statement.setInt(4, income.getUserId());
             statement.setInt(5, income.getTaxId());
             statement.executeUpdate();
+            result = true;
 
             try(ResultSet generatedKeys = statement.getGeneratedKeys()){
                 if (generatedKeys.next()){
@@ -71,7 +69,9 @@ public class IncomeDao implements IncomeDaoInterface {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            result = false;
         }
+        return result;
     }
 
     @Override
@@ -84,7 +84,8 @@ public class IncomeDao implements IncomeDaoInterface {
 
             income = Optional.of(buildIncome(resultSet));
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return income;
         }
 
         return income;
@@ -104,12 +105,14 @@ public class IncomeDao implements IncomeDaoInterface {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return incomes;
+            //e.printStackTrace();
         }
         return incomes;
     }
 
     private Income buildIncome(ResultSet resultSet) throws SQLException {
+        resultSet.next();
         return new IncomeBuilder().setId(resultSet.getInt(1))
                 .setName(resultSet.getString(2))
                 .setIsPerMonth(resultSet.getBoolean(3))

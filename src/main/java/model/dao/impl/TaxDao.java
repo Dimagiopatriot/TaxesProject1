@@ -16,22 +16,15 @@ public class TaxDao implements GenericDao<Tax> {
     private static final String DELETE_QUERY = "DELETE from firstproject.tax WHERE id=?;";
     private static final String UPDATE_QUERY = "UPDATE firstproject.tax SET taxPercent=?, name=? WHERE id=?;";
     private static final String INSERT_QUERY = "INSERT INTO firstproject.user(password, email, isAdmin) VALUES(?, ?, ?);";
-    private static final String SELECT_QUERY = "SELECT FROM firstproject.user WHERE id=?;";
+    private static final String SELECT_QUERY = "SELECT * FROM firstproject.user WHERE id=?;";
 
-    @Override
-    public void delete(int id) {
-        try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)){
-
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public boolean delete(int id){
+        return delete(id, DELETE_QUERY);
     }
 
     @Override
-    public void update(Tax tax) {
+    public boolean update(Tax tax) {
+        boolean result;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)){
 
@@ -39,19 +32,24 @@ public class TaxDao implements GenericDao<Tax> {
             statement.setString(2, tax.getName());
             statement.setInt(3, tax.getId());
             statement.executeUpdate();
+            result = true;
         } catch (SQLException e) {
             e.printStackTrace();
+            result = false;
         }
+        return result;
     }
 
     @Override
-    public void insert(Tax tax) {
+    public boolean insert(Tax tax) {
+        boolean result;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
 
             statement.setDouble(1, tax.getTaxPercent());
             statement.setString(2, tax.getName());
             statement.executeUpdate();
+            result = true;
 
             try(ResultSet generatedKeys = statement.getGeneratedKeys()){
                 if (generatedKeys.next()){
@@ -60,7 +58,9 @@ public class TaxDao implements GenericDao<Tax> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            result = false;
         }
+        return result;
     }
 
     @Override
@@ -73,13 +73,15 @@ public class TaxDao implements GenericDao<Tax> {
 
             income = Optional.of(buildTax(resultSet));
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return income;
         }
 
         return income;
     }
 
     private Tax buildTax(ResultSet resultSet) throws SQLException {
+        resultSet.next();
         return new TaxBuilder()
                 .setId(resultSet.getInt(1))
                 .setTaxPercent(resultSet.getDouble(2))

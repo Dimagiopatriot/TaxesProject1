@@ -1,5 +1,11 @@
 package model.dao;
 
+import model.dao.connection.SQLConnector;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -7,8 +13,22 @@ import java.util.Optional;
  */
 public interface GenericDao<T> {
 
-    void delete(int id);
-    void update(T t);
-    void insert(T t);
+    default boolean delete(int id, String deleteQuery){
+        boolean result;
+        try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(deleteQuery)){
+
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    boolean update(T t);
+    boolean insert(T t);
     Optional<T> select(int id);
 }
