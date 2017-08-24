@@ -1,5 +1,6 @@
 package controller;
 
+import model.dao.UserDaoInterface;
 import model.dao.impl.UserDao;
 import model.entities.users.User;
 
@@ -22,7 +23,7 @@ public class RegisterController extends HttpServlet {
         String password = request.getParameter("userPass");
 
         User registeredUser = new User(email, password);
-        UserDao userDao = new UserDao();
+        UserDaoInterface userDao = new UserDao();
         boolean result = userDao.insert(registeredUser);
         if (result) {
             out.print("Ви зареєстровані!!");
