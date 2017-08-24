@@ -1,6 +1,5 @@
 package controller;
 
-import model.dao.GenericDao;
 import model.dao.UserDaoInterface;
 import model.dao.impl.UserDao;
 import model.entities.users.User;
@@ -29,7 +28,12 @@ public class LoginController extends HttpServlet {
         Optional<User> userOptional = userDao.selectByEmailPassword(email, password);
 
         if (userOptional.isPresent()) {
-            RequestDispatcher rd = req.getRequestDispatcher("main_user.jsp");
+            String url = "main_user.jsp";
+            User user = userOptional.get();
+            if (user.isAdmin()) {
+                url = "main_admin.jsp";
+            }
+            RequestDispatcher rd = req.getRequestDispatcher(url);
             rd.forward(req, resp);
         } else {
             RequestDispatcher rd = req.getRequestDispatcher("login.jsp");
