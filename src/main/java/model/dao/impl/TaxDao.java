@@ -24,32 +24,29 @@ public class TaxDao implements GenericDao<Tax> {
 
     @Override
     public boolean update(Tax tax) {
-        boolean result;
+        int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)){
 
             statement.setDouble(1, tax.getTaxPercent());
             statement.setString(2, tax.getName());
             statement.setInt(3, tax.getId());
-            statement.executeUpdate();
-            result = true;
+            updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            result = false;
         }
-        return result;
+        return updatedRow > 0;
     }
 
     @Override
     public boolean insert(Tax tax) {
-        boolean result;
+        int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
 
             statement.setDouble(1, tax.getTaxPercent());
             statement.setString(2, tax.getName());
-            statement.executeUpdate();
-            result = true;
+            updatedRow = statement.executeUpdate();
 
             try(ResultSet generatedKeys = statement.getGeneratedKeys()){
                 if (generatedKeys.next()){
@@ -58,9 +55,8 @@ public class TaxDao implements GenericDao<Tax> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            result = false;
         }
-        return result;
+        return updatedRow > 0;
     }
 
     @Override

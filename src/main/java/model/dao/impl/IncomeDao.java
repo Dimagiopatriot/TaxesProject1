@@ -29,7 +29,7 @@ public class IncomeDao implements IncomeDaoInterface {
 
     @Override
     public boolean update(Income income) {
-        boolean result;
+        int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)){
 
@@ -39,18 +39,16 @@ public class IncomeDao implements IncomeDaoInterface {
             statement.setInt(4, income.getUserId());
             statement.setInt(5, income.getTaxId());
             statement.setInt(6, income.getId());
-            statement.executeUpdate();
-            result = true;
+            updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            result = false;
         }
-        return result;
+        return updatedRow > 0;
     }
 
     @Override
     public boolean insert(Income income) {
-        boolean result;
+        int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
 
@@ -59,8 +57,7 @@ public class IncomeDao implements IncomeDaoInterface {
             statement.setDouble(3, income.getIncome());
             statement.setInt(4, income.getUserId());
             statement.setInt(5, income.getTaxId());
-            statement.executeUpdate();
-            result = true;
+            updatedRow = statement.executeUpdate();
 
             try(ResultSet generatedKeys = statement.getGeneratedKeys()){
                 if (generatedKeys.next()){
@@ -69,9 +66,8 @@ public class IncomeDao implements IncomeDaoInterface {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            result = false;
         }
-        return result;
+        return updatedRow > 0;
     }
 
     @Override

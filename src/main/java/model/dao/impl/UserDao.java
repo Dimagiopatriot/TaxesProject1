@@ -25,7 +25,7 @@ public class UserDao implements UserDaoInterface {
 
     @Override
     public boolean update(User user) {
-        boolean result;
+        int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)){
 
@@ -33,26 +33,23 @@ public class UserDao implements UserDaoInterface {
             statement.setString(2, user.getEmail());
             statement.setBoolean(3, user.isAdmin());
             statement.setInt(4, user.getId());
-            statement.executeUpdate();
-            result = true;
+            updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            result = false;
         }
-        return result;
+        return updatedRow > 0;
     }
 
     @Override
     public boolean insert(User user) {
-        boolean result;
+        int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
 
             statement.setString(1, user.getPassword());
             statement.setString(2, user.getEmail());
             statement.setBoolean(3, user.isAdmin());
-            statement.executeUpdate();
-            result = true;
+            updatedRow = statement.executeUpdate();
 
             try(ResultSet generatedKeys = statement.getGeneratedKeys()){
                 if (generatedKeys.next()){
@@ -61,9 +58,8 @@ public class UserDao implements UserDaoInterface {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            result = false;
         }
-        return result;
+        return updatedRow > 0;
     }
 
     @Override

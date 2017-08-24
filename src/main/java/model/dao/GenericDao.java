@@ -14,18 +14,16 @@ import java.util.Optional;
 public interface GenericDao<T> {
 
     default boolean delete(int id, String deleteQuery){
-        boolean result;
+        int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(deleteQuery)){
 
             statement.setInt(1, id);
-            statement.executeUpdate();
-            result = true;
+            updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            result = false;
         }
-        return result;
+        return updatedRow > 0;
     }
 
     boolean update(T t);
