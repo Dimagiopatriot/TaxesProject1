@@ -3,6 +3,8 @@ package model.entities.taxes;
 import model.entities.incomes.Income;
 import model.entities.utils.Constants;
 
+import java.io.Serializable;
+
 /**
  * Created by troll on 13.08.2017.
  */
@@ -12,6 +14,8 @@ public class Tax implements TaxCalculator{
     double taxPercent;
     double taxNeedToPay;
     private String name;
+
+    public Tax(){}
 
     public Tax(double taxPercent){
         this.taxPercent = taxPercent;
@@ -52,6 +56,5 @@ public class Tax implements TaxCalculator{
     public void setName(String name) {
         this.name = name;
     }
-
 
 }
