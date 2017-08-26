@@ -27,7 +27,7 @@ public class RegisterController extends HttpServlet {
         boolean result = userDao.insert(registeredUser);
         if (result) {
             out.print("Ви зареєстровані!!");
-            out.print("<br/><br/><a href=\"main_guest.jsp\">Перейти на головну</a>");
+            out.print("<br/><br/><a href=\"main_user.jsp\">Перейти на головну</a>");
         } else {
             out.print("На жаль, виникла помилка. Спробуйте ще раз.");
             out.print("<br/><br/><a href=\"main_guest.jsp\">Перейти на головну</a>");
