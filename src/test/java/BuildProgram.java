@@ -1,9 +1,11 @@
 import controller.AdminPageController;
+import model.dao.UserDaoInterface;
 import model.dao.impl.TaxDao;
 import model.dao.impl.UserDao;
 import model.entities.taxes.Tax;
 import model.entities.taxes.TaxBuilder;
 import model.entities.users.User;
+import model.entities.users.UserBuilder;
 
 import java.util.Optional;
 
@@ -13,11 +15,13 @@ import java.util.Optional;
 public class BuildProgram {
 
     public static void main(String[] args) {
-        TaxDao taxDao = new TaxDao();
-        Tax tax = new TaxBuilder()
-                .setName("work")
-                .setTaxPercent(20)
-                .createTax();
-        System.out.print(taxDao.update(tax));
+        UserDao userDao = new UserDao();
+        User user = new UserBuilder()
+                .setId(11)
+                .setEmail("admin@gmail.com")
+                .setPassword("admin")
+                .setIsAdmin(true)
+                .createUser();
+        System.out.print(userDao.update(user));
     }
 }
