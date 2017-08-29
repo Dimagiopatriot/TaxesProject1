@@ -1,5 +1,6 @@
 package controller;
 
+import controller.utils.Constants;
 import model.dao.TaxDaoInterface;
 import model.dao.impl.TaxDao;
 import model.entities.taxes.Tax;
@@ -35,7 +36,7 @@ public class AdminPageController extends HttpServlet {
         updateTaxInDatabase(transfer, taxDao);
         updateTaxInDatabase(childrenPrivileges, taxDao);
         updateTaxInDatabase(materialAid, taxDao);
-        RequestDispatcher rd = req.getRequestDispatcher("main_admin.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher(Constants.MAIN_ADMIN_URL);
         rd.forward(req, resp);
     }
 

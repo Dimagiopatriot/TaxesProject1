@@ -1,5 +1,7 @@
 package controller;
 
+import controller.utils.Constants;
+import controller.utils.ViewMessages;
 import model.dao.UserDaoInterface;
 import model.dao.impl.UserDao;
 import model.entities.users.User;
@@ -21,25 +23,40 @@ public class LoginController extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
 
         PrintWriter out = resp.getWriter();
-        String email = req.getParameter("userEmail");
-        String password = req.getParameter("userPass");
+        String email = req.getParameter(Constants.EMAIL_FIELD);
+        String password = req.getParameter(Constants.PASSWORD_FIELD);
 
-        UserDaoInterface userDao = new UserDao();
-        Optional<User> userOptional = userDao.selectByEmailPassword(email, password);
+        Optional<User> userOptional = retrieveUserFromDatabase(email, password);
 
         if (userOptional.isPresent()) {
-            String url = "main_user.jsp";
-            User user = userOptional.get();
-            if (user.isAdmin()) {
-                url = "main_admin.jsp";
-            }
-            RequestDispatcher rd = req.getRequestDispatcher(url);
-            rd.forward(req, resp);
+            openUserPage(userOptional.get(), req, resp);
         } else {
-            RequestDispatcher rd = req.getRequestDispatcher("login.jsp");
-            req.getSession().setAttribute("errorMessage", "Невірно вказаний логін або пароль!");
-            rd.include(req, resp);
+           showError(req, resp);
         }
         out.close();
+    }
+
+    private Optional<User> retrieveUserFromDatabase(String email, String password){
+        UserDaoInterface userDao = new UserDao();
+        return userDao.selectByEmailPassword(email, password);
+    }
+
+    private void openUserPage(User user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String url = getUrl(user);
+        RequestDispatcher rd = req.getRequestDispatcher(url);
+        rd.forward(req, resp);
+    }
+
+    private void showError(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher rd = req.getRequestDispatcher(Constants.LOGIN_URL);
+        req.getSession().setAttribute("errorMessage", ViewMessages.EMAIL_AND_PASSWORD_ERROR);
+        rd.include(req, resp);
+    }
+
+    private String getUrl(User user){
+        if (user.isAdmin())
+            return Constants.MAIN_ADMIN_URL;
+        else
+            return Constants.MAIN_USER_URL;
     }
 }

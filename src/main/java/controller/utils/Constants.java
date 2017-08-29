@@ -18,4 +18,13 @@ public interface Constants {
     String TRANSFER_INCOME_NAME = "transfer";
     String CHILDREN_PRIVILEGES_INCOME_NAME = "children_privileges";
     String MATERIAL_AID_INCOME_NAME = "material_aid";
+
+    String EMAIL_FIELD = "userEmail";
+    String PASSWORD_FIELD = "userPass";
+
+    //urls
+    String MAIN_USER_URL = "main_user.jsp";
+    String MAIN_ADMIN_URL = "main_admin.jsp";
+    String LOGIN_URL = "login.jsp";
+    String MAIN_GUEST_URL = "main_user.jsp";
 }
