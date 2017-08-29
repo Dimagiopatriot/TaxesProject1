@@ -18,6 +18,8 @@ public class IncomeDao implements IncomeDaoInterface {
     private static final String DELETE_QUERY = "DELETE from firstproject.income WHERE id=?;";
     private static final String UPDATE_QUERY = "UPDATE firstproject.income SET name=?, isPerMonth=?, income=?, userId=?, " +
             "taxId=? WHERE id=?;";
+    private static final String UPDATE_QUERY_BY_NAME = "UPDATE firstproject.income SET isPerMonth=?, income=?, userId=?, " +
+            "taxId=? WHERE name=?;";
     private static final String INSERT_QUERY = "INSERT INTO firstproject.income(name, isPerMonth, income, userId, taxId) " +
             "VALUES(?, ?, ?, ?, ?);";
     private static final String SELECT_QUERY = "SELECT * FROM firstproject.income WHERE id=?;";
@@ -105,6 +107,24 @@ public class IncomeDao implements IncomeDaoInterface {
             //e.printStackTrace();
         }
         return incomes;
+    }
+
+    @Override
+    public boolean updateIncomeByName(Income income) {
+        int updatedRow = 0;
+        try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_BY_NAME)){
+
+            statement.setBoolean(1, income.isPerMonth());
+            statement.setDouble(2, income.getIncome());
+            statement.setInt(3, income.getUserId());
+            statement.setInt(4, income.getTaxId());
+            statement.setString(5, income.getName());
+            updatedRow = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return updatedRow > 0;
     }
 
     private Income buildIncome(ResultSet resultSet) throws SQLException {

@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface IncomeDaoInterface extends GenericDao<Income> {
     List<Income> selectAllIncomesForUser(int userId);
+    boolean updateIncomeByName(Income income);
 }
