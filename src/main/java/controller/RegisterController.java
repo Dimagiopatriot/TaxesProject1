@@ -41,7 +41,7 @@ public class RegisterController extends HttpServlet {
 
     private void showCongratulation(PrintWriter out){
         out.print(ViewMessages.REGISTER_CONGRATULATION);
-        out.print("<br/><br/><a href=\"" + Constants.MAIN_GUEST_URL + "\">Перейти на головну</a>");
+        out.print("<br/><br/><a href=\"" + Constants.MAIN_USER_URL + "\">Перейти на головну</a>");
     }
 
     private void showError(PrintWriter out){

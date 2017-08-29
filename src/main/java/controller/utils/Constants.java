@@ -26,5 +26,5 @@ public interface Constants {
     String MAIN_USER_URL = "main_user.jsp";
     String MAIN_ADMIN_URL = "main_admin.jsp";
     String LOGIN_URL = "login.jsp";
-    String MAIN_GUEST_URL = "main_user.jsp";
+    String MAIN_GUEST_URL = "main_guest.jsp";
 }
