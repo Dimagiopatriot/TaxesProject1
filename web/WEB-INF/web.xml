@@ -35,6 +35,16 @@
         <url-pattern>/Admin</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>RegisteredUser</servlet-name>
+        <servlet-class>controller.RegisteredUserController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RegisteredUser</servlet-name>
+        <url-pattern>/RegisteredUser</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>register.html</welcome-file>
     </welcome-file-list>
