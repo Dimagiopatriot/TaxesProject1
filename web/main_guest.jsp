@@ -1,3 +1,5 @@
+<%@ page import="controller.utils.TaxRetrieve" %>
+<%@ page import="static controller.utils.Constants.*" %>
 <%--
   Created by IntelliJ IDEA.
   User: troll
@@ -6,6 +8,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    TaxRetrieve taxRetrieve = new TaxRetrieve();
+%>
 <html>
 <head>
     <title>Головна</title>
@@ -20,31 +25,31 @@
     <table border="1">
         <tr>
             <td>Робота</td>
-            <td></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(WORK_TAX_NAME)+ " %"%></td>
         </tr>
         <tr>
             <td>Авторська винагорода</td>
-            <td></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(REWARD_TAX_NAME)+ " %"%></td>
         </tr>
         <tr>
             <td>Продаж майна</td>
-            <td></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(PROPERTY_TAX_NAME)+ " %"%></td>
         </tr>
         <tr>
             <td>Подарунки у вигляді грошей або майна</td>
-            <td></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(GIFTS_TAX_NAME)+ " %"%></td>
         </tr>
         <tr>
             <td>Переводи з-за кордону</td>
-            <td></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(TRANSFER_TAX_NAME)+ " %"%></td>
         </tr>
         <tr>
             <td>Пільги на дітей</td>
-            <td></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(CHILDREN_PRIVILEGES_TAX_NAME)+ " %"%></td>
         </tr>
         <tr>
             <td>Матеріальна допомога</td>
-            <td></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(MATERIAL_AID_TAX_NAME)+ " %"%></td>
         </tr>
     </table>
     <br/>

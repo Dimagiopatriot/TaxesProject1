@@ -1,8 +1,6 @@
-<%@ page import="model.dao.TaxDaoInterface" %>
-<%@ page import="model.dao.impl.TaxDao" %>
+<%@ page import="controller.utils.TaxRetrieve" %>
 <%@ page import="static controller.utils.Constants.*" %>
-<%@ page import="java.util.Optional" %>
-<%@ page import="model.entities.taxes.Tax" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: troll
   Date: 21.08.2017
@@ -16,32 +14,24 @@
 </head>
 <body>
 <%
-    TaxDaoInterface taxDao = new TaxDao();
-%>
-<%!
-    private double checkTaxPercent(Optional<Tax> tax){
-        if (tax.isPresent()){
-            return tax.get().getTaxPercent();
-        }
-        return 0.;
-    }
+    TaxRetrieve retrieve = new TaxRetrieve();
 %>
 <form action="Admin" method="post">
     Встановити розмір податків у відсотках:<br/><br/>
     Робота: <input type="number" min="0" step="0.01" name="work"
-                   value="<%=checkTaxPercent(taxDao.selectByName(WORK_TAX_NAME))%>"/><br/><br/>
+                   value="<%=retrieve.retrieveTaxPercentFromDatabase(WORK_TAX_NAME)%>"/><br/><br/>
     Авторська винагорода: <input type="number" min="0" step="0.01" name="reward"
-                                 value="<%=checkTaxPercent(taxDao.selectByName(REWARD_TAX_NAME))%>"/><br/><br/>
+                                 value="<%=retrieve.retrieveTaxPercentFromDatabase(REWARD_TAX_NAME)%>"/><br/><br/>
     Продаж майна: <input type="number" step="0.01" min="0" name="property"
-                         value="<%=checkTaxPercent(taxDao.selectByName(PROPERTY_TAX_NAME))%>"/><br/><br/>
+                         value="<%=retrieve.retrieveTaxPercentFromDatabase(PROPERTY_TAX_NAME)%>"/><br/><br/>
     Подарунки у вигляді грошей або майна: <input type="number" step="0.01" min="0" name="gifts"
-                                                 value="<%=checkTaxPercent(taxDao.selectByName(GIFTS_TAX_NAME))%>"/><br/><br/>
+                                                 value="<%=retrieve.retrieveTaxPercentFromDatabase(GIFTS_TAX_NAME)%>"/><br/><br/>
     Переказ коштів з-за кордону: <input type="number" min="0" step="0.01" name="transfer"
-                                        value="<%=checkTaxPercent(taxDao.selectByName(TRANSFER_TAX_NAME))%>"/><br/><br/>
+                                        value="<%=retrieve.retrieveTaxPercentFromDatabase(TRANSFER_TAX_NAME)%>"/><br/><br/>
     Пільги на дітей: <input type="number" min="0" step="0.01" name="children_privileges"
-                            value="<%=checkTaxPercent(taxDao.selectByName(CHILDREN_PRIVILEGES_TAX_NAME))%>"/><br/><br/>
+                            value="<%=retrieve.retrieveTaxPercentFromDatabase(CHILDREN_PRIVILEGES_TAX_NAME)%>"/><br/><br/>
     Матеріальна допомога: <input type="number" min="0" step="0.01" name="material_aid"
-                                 value="<%=checkTaxPercent(taxDao.selectByName(MATERIAL_AID_TAX_NAME))%>"/><br/><br/>
+                                 value="<%=retrieve.retrieveTaxPercentFromDatabase(MATERIAL_AID_TAX_NAME)%>"/><br/><br/>
     <input type="submit" value="Змінити податки"/><br/><br/>
     <a href="main_user.jsp">Перейти на сторінку для розрахунку податків</a>
 </form>
