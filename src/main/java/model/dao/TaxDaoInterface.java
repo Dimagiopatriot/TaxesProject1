@@ -1,14 +1,15 @@
 package model.dao;
 
+import model.dao.exceptions.DaoException;
 import model.entities.taxes.Tax;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TaxDaoInterface extends GenericDao<Tax> {
-    boolean updateTaxByName(Tax tax);
-    void updateAllTaxes(List<Tax> taxList);
-    void updateAllTaxesByName(List<Tax> taxList);
+    boolean updateTaxByName(Tax tax) throws DaoException;
+    void updateAllTaxes(List<Tax> taxList) throws DaoException;
+    void updateAllTaxesByName(List<Tax> taxList) throws DaoException;
 
-    Optional<Tax> selectByName(String name);
+    Optional<Tax> selectByName(String name) throws DaoException;
 }

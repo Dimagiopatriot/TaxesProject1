@@ -2,6 +2,7 @@ package model.dao.impl;
 
 import model.dao.TaxDaoInterface;
 import model.dao.connection.SQLConnector;
+import model.dao.exceptions.DaoException;
 import model.entities.taxes.Tax;
 import model.entities.taxes.TaxBuilder;
 
@@ -26,7 +27,7 @@ public class TaxDao implements TaxDaoInterface {
     }
 
     @Override
-    public boolean update(Tax tax) {
+    public boolean update(Tax tax) throws DaoException {
         int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)){
@@ -37,12 +38,13 @@ public class TaxDao implements TaxDaoInterface {
             updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DaoException();
         }
         return updatedRow > 0;
     }
 
     @Override
-    public boolean insert(Tax tax) {
+    public boolean insert(Tax tax) throws DaoException {
         int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
@@ -58,12 +60,13 @@ public class TaxDao implements TaxDaoInterface {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DaoException();
         }
         return updatedRow > 0;
     }
 
     @Override
-    public Optional<Tax> select(int id) {
+    public Optional<Tax> select(int id) throws DaoException {
         Optional<Tax> income = Optional.empty();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_QUERY)) {
@@ -72,15 +75,15 @@ public class TaxDao implements TaxDaoInterface {
 
             income = Optional.of(buildTax(resultSet));
         } catch (SQLException e) {
-            //e.printStackTrace();
-            return income;
+            e.printStackTrace();
+            throw new DaoException();
         }
 
         return income;
     }
 
     @Override
-    public boolean updateTaxByName(Tax tax) {
+    public boolean updateTaxByName(Tax tax) throws DaoException {
         int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_BY_NAME)){
@@ -90,26 +93,27 @@ public class TaxDao implements TaxDaoInterface {
             updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DaoException();
         }
         return updatedRow > 0;
     }
 
     @Override
-    public void updateAllTaxes(List<Tax> taxList) {
+    public void updateAllTaxes(List<Tax> taxList) throws DaoException {
         for (Tax tax: taxList){
             update(tax);
         }
     }
 
     @Override
-    public void updateAllTaxesByName(List<Tax> taxList) {
+    public void updateAllTaxesByName(List<Tax> taxList) throws DaoException {
         for (Tax tax: taxList){
             updateTaxByName(tax);
         }
     }
 
     @Override
-    public Optional<Tax> selectByName(String name) {
+    public Optional<Tax> selectByName(String name) throws DaoException {
         Optional<Tax> income = Optional.empty();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_QUERY_BY_NAME)) {
@@ -118,8 +122,8 @@ public class TaxDao implements TaxDaoInterface {
 
             income = Optional.of(buildTax(resultSet));
         } catch (SQLException e) {
-            //e.printStackTrace();
-            return income;
+            e.printStackTrace();
+            throw new DaoException();
         }
 
         return income;

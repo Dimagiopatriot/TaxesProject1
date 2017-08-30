@@ -21,6 +21,7 @@ public interface Constants {
 
     String EMAIL_FIELD = "userEmail";
     String PASSWORD_FIELD = "userPass";
+    String USER_ID = "userID";
 
     //urls
     String MAIN_USER_URL = "main_user.jsp";

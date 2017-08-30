@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.dao.connection.SQLConnector;
+import model.dao.exceptions.DaoException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,7 +27,7 @@ public interface GenericDao<T> {
         return updatedRow > 0;
     }
 
-    boolean update(T t);
-    boolean insert(T t);
-    Optional<T> select(int id);
+    boolean update(T t) throws DaoException;
+    boolean insert(T t) throws DaoException;
+    Optional<T> select(int id) throws DaoException;
 }

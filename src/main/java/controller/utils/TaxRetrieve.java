@@ -1,6 +1,7 @@
 package controller.utils;
 
 import model.dao.TaxDaoInterface;
+import model.dao.exceptions.DaoException;
 import model.dao.impl.TaxDao;
 import model.entities.taxes.Tax;
 
@@ -10,11 +11,11 @@ public class TaxRetrieve {
 
     private TaxDaoInterface taxDao = new TaxDao();
 
-    public double retrieveTaxPercentFromDatabase(String taxType) {
+    public double retrieveTaxPercentFromDatabase(String taxType) throws DaoException {
         return checkTaxPercent(taxDao.selectByName(taxType));
     }
 
-    public int retrieveTaxIdFromDatabase(String taxType) {
+    public int retrieveTaxIdFromDatabase(String taxType) throws DaoException {
         Optional<Tax> tax = taxDao.selectByName(taxType);
         if (tax.isPresent())
             return tax.get().getId();

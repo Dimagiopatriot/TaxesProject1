@@ -3,6 +3,7 @@ package controller;
 import controller.utils.Constants;
 import controller.utils.ViewMessages;
 import model.dao.UserDaoInterface;
+import model.dao.exceptions.DaoException;
 import model.dao.impl.UserDao;
 import model.entities.users.User;
 
@@ -24,7 +25,12 @@ public class RegisterController extends HttpServlet {
         String email = request.getParameter(Constants.EMAIL_FIELD);
         String password = request.getParameter(Constants.PASSWORD_FIELD);
 
-        boolean result = saveUserToDatabase(email, password);
+        boolean result = false;
+        try {
+            result = saveUserToDatabase(email, password);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
         if (result) {
             showCongratulation(out);
         } else {
@@ -33,7 +39,7 @@ public class RegisterController extends HttpServlet {
         out.close();
     }
 
-    private boolean saveUserToDatabase(String email, String password){
+    private boolean saveUserToDatabase(String email, String password) throws DaoException {
         User registeredUser = new User(email, password);
         UserDaoInterface userDao = new UserDao();
         return userDao.insert(registeredUser);

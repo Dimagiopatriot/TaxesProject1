@@ -2,6 +2,7 @@ package model.dao.impl;
 
 import model.dao.IncomeDaoInterface;
 import model.dao.connection.SQLConnector;
+import model.dao.exceptions.DaoException;
 import model.entities.incomes.Income;
 import model.entities.incomes.IncomeBuilder;
 
@@ -18,8 +19,8 @@ public class IncomeDao implements IncomeDaoInterface {
     private static final String DELETE_QUERY = "DELETE from firstproject.income WHERE id=?;";
     private static final String UPDATE_QUERY = "UPDATE firstproject.income SET name=?, isPerMonth=?, income=?, userId=?, " +
             "taxId=? WHERE id=?;";
-    private static final String UPDATE_QUERY_BY_NAME = "UPDATE firstproject.income SET isPerMonth=?, income=?, userId=?, " +
-            "taxId=? WHERE name=?;";
+    private static final String UPDATE_QUERY_BY_USER_ID = "UPDATE firstproject.income SET name=?, isPerMonth=?, income=?, " +
+            "taxId=? WHERE userId=?;";
     private static final String INSERT_QUERY = "INSERT INTO firstproject.income(name, isPerMonth, income, userId, taxId) " +
             "VALUES(?, ?, ?, ?, ?);";
     private static final String SELECT_QUERY = "SELECT * FROM firstproject.income WHERE id=?;";
@@ -30,7 +31,7 @@ public class IncomeDao implements IncomeDaoInterface {
     }
 
     @Override
-    public boolean update(Income income) {
+    public boolean update(Income income) throws DaoException {
         int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)){
@@ -44,12 +45,13 @@ public class IncomeDao implements IncomeDaoInterface {
             updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DaoException();
         }
         return updatedRow > 0;
     }
 
     @Override
-    public boolean insert(Income income) {
+    public boolean insert(Income income) throws DaoException {
         int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)){
@@ -68,12 +70,13 @@ public class IncomeDao implements IncomeDaoInterface {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DaoException();
         }
         return updatedRow > 0;
     }
 
     @Override
-    public Optional<Income> select(int id) {
+    public Optional<Income> select(int id) throws DaoException {
         Optional<Income> income = Optional.empty();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_QUERY)) {
@@ -82,15 +85,15 @@ public class IncomeDao implements IncomeDaoInterface {
 
             income = Optional.of(buildIncome(resultSet));
         } catch (SQLException e) {
-            //e.printStackTrace();
-            return income;
+            e.printStackTrace();
+            throw new DaoException();
         }
 
         return income;
     }
 
     @Override
-    public List<Income> selectAllIncomesForUser(int userId) {
+    public List<Income> selectAllIncomesForUser(int userId) throws DaoException {
         List<Income> incomes = new ArrayList<>();
         try(Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
             PreparedStatement statement = connection.prepareStatement(SELECT_EMAIL_PASS_QUERY)) {
@@ -103,17 +106,17 @@ public class IncomeDao implements IncomeDaoInterface {
                 }
             }
         } catch (SQLException e) {
-            return incomes;
-            //e.printStackTrace();
+            e.printStackTrace();
+            throw new DaoException();
         }
         return incomes;
     }
 
     @Override
-    public boolean updateIncomeByName(Income income) {
+    public boolean updateIncomeByUserID(Income income) throws DaoException {
         int updatedRow = 0;
         try (Connection connection = DriverManager.getConnection(SQLConnector.URL, SQLConnector.USER, SQLConnector.PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_BY_NAME)){
+             PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY_BY_USER_ID)){
 
             statement.setBoolean(1, income.isPerMonth());
             statement.setDouble(2, income.getIncome());
@@ -123,6 +126,7 @@ public class IncomeDao implements IncomeDaoInterface {
             updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DaoException();
         }
         return updatedRow > 0;
     }

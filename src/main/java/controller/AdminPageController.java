@@ -2,6 +2,7 @@ package controller;
 
 import controller.utils.Constants;
 import model.dao.TaxDaoInterface;
+import model.dao.exceptions.DaoException;
 import model.dao.impl.TaxDao;
 import model.entities.taxes.Tax;
 import model.entities.taxes.TaxBuilder;
@@ -29,13 +30,17 @@ public class AdminPageController extends HttpServlet {
         Tax childrenPrivileges = createTax(CHILDREN_PRIVILEGES_TAX_NAME, req);
         Tax materialAid = createTax(MATERIAL_AID_TAX_NAME, req);
 
-        updateTaxInDatabase(work, taxDao);
-        updateTaxInDatabase(reward, taxDao);
-        updateTaxInDatabase(property, taxDao);
-        updateTaxInDatabase(gifts, taxDao);
-        updateTaxInDatabase(transfer, taxDao);
-        updateTaxInDatabase(childrenPrivileges, taxDao);
-        updateTaxInDatabase(materialAid, taxDao);
+        try {
+            updateTaxInDatabase(work, taxDao);
+            updateTaxInDatabase(reward, taxDao);
+            updateTaxInDatabase(property, taxDao);
+            updateTaxInDatabase(gifts, taxDao);
+            updateTaxInDatabase(transfer, taxDao);
+            updateTaxInDatabase(childrenPrivileges, taxDao);
+            updateTaxInDatabase(materialAid, taxDao);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
         RequestDispatcher rd = req.getRequestDispatcher(Constants.MAIN_ADMIN_URL);
         rd.forward(req, resp);
     }
@@ -47,11 +52,11 @@ public class AdminPageController extends HttpServlet {
                 .createTax();
     }
 
-    private void updateTaxInDatabase(Tax tax, TaxDaoInterface taxDao){
+    private void updateTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
         if (!taxDao.updateTaxByName(tax)){ insertTaInDatabase(tax, taxDao);}
     }
 
-    private void insertTaInDatabase(Tax tax, TaxDaoInterface taxDao){
+    private void insertTaInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
         taxDao.insert(tax);
     }
 

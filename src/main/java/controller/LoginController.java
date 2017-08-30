@@ -44,6 +44,7 @@ public class LoginController extends HttpServlet {
     private void openUserPage(User user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String url = getUrl(user);
         RequestDispatcher rd = req.getRequestDispatcher(url);
+        req.getSession().setAttribute(Constants.USER_ID,user.getId());
         rd.forward(req, resp);
     }
 
