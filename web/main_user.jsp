@@ -20,35 +20,35 @@
     доходів.
     <br/>
     <br/>
-    Таблиця податків:
+    Таблиця податків <b>у відсотках</b>:
     <table border="1">
         <tr>
-            <td>Робота</td>
-            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(WORK_TAX_NAME)+ " %"%></td>
+            <td id="workLol">Робота</td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(WORK_TAX_NAME)%></td>
         </tr>
         <tr>
             <td>Авторська винагорода</td>
-            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(REWARD_TAX_NAME)+ " %"%></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(REWARD_TAX_NAME)%></td>
         </tr>
         <tr>
             <td>Продаж майна</td>
-            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(PROPERTY_TAX_NAME)+ " %"%></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(PROPERTY_TAX_NAME)%></td>
         </tr>
         <tr>
             <td>Подарунки у вигляді грошей або майна</td>
-            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(GIFTS_TAX_NAME)+ " %"%></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(GIFTS_TAX_NAME)%></td>
         </tr>
         <tr>
             <td>Переводи з-за кордону</td>
-            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(TRANSFER_TAX_NAME)+ " %"%></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(TRANSFER_TAX_NAME)%></td>
         </tr>
         <tr>
             <td>Пільги на дітей</td>
-            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(CHILDREN_PRIVILEGES_TAX_NAME)+ " %"%></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(CHILDREN_PRIVILEGES_TAX_NAME)%></td>
         </tr>
         <tr>
             <td>Матеріальна допомога</td>
-            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(MATERIAL_AID_TAX_NAME)+ " %"%></td>
+            <td><%=taxRetrieve.retrieveTaxPercentFromDatabase(MATERIAL_AID_TAX_NAME)%></td>
         </tr>
     </table>
     <br/>
