@@ -11,12 +11,22 @@ public class TaxRetrieve {
 
     private TaxDaoInterface taxDao = new TaxDao();
 
-    public double retrieveTaxPercentFromDatabase(String taxType) throws DaoException {
-        return checkTaxPercent(taxDao.selectByName(taxType));
+    public double retrieveTaxPercentFromDatabase(String taxType)  {
+        try {
+            return checkTaxPercent(taxDao.selectByName(taxType));
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
-    public int retrieveTaxIdFromDatabase(String taxType) throws DaoException {
-        Optional<Tax> tax = taxDao.selectByName(taxType);
+    public int retrieveTaxIdFromDatabase(String taxType) {
+        Optional<Tax> tax = Optional.empty();
+        try {
+            tax = taxDao.selectByName(taxType);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
         if (tax.isPresent())
             return tax.get().getId();
         else
