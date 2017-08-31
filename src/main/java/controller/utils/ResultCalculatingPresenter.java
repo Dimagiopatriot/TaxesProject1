@@ -1,25 +1,36 @@
 package controller.utils;
 
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class ResultCalculatingPresenter implements Comparator<String>{
+public class ResultCalculatingPresenter {
 
-    Map<String, Double> resultTaxMap = new HashMap<>();
+    private Map<String, Double> resultTaxMap = new HashMap<>();
 
     public void addResultItem(String viewNameOfTax, double taxNeedToPay){
         resultTaxMap.put(viewNameOfTax, taxNeedToPay);
     }
 
-    @Override
-    public int compare(String o1, String o2) {
-        if (resultTaxMap.get(o1).equals(resultTaxMap.get(o2)))
-            return 0;
-        if (resultTaxMap.get(o1) > resultTaxMap.get(o2)){
-            return -1;
-        } else {
-            return 1;
-        }
+    public Map<String, Double> getResultTaxMap() {
+        return resultTaxMap;
+    }
+
+    public Map<String, Double> sortResultTaxMap(){
+        return sortByValue(resultTaxMap);
+    }
+
+    private static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        return map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
     }
 }
