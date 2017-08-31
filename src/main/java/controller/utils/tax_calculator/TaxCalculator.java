@@ -3,6 +3,8 @@ package controller.utils.tax_calculator;
 import model.entities.incomes.Income;
 import model.entities.utils.Constants;
 
+import java.util.Locale;
+
 public class TaxCalculator implements TaxCalculatorInterface {
 
     @Override
@@ -13,6 +15,7 @@ public class TaxCalculator implements TaxCalculatorInterface {
         } else if (income.isPerMonth()) {
             taxNeedToPay = Constants.MONTHS_IN_YEAR * ((income.getIncome() * taxPercent) / Constants.HUNDRED);
         }
+        taxNeedToPay = Double.valueOf(String.format(Locale.US, "%.2f", taxNeedToPay));
         return taxNeedToPay;
     }
 }
