@@ -31,12 +31,12 @@ public class LoginController extends HttpServlet {
         if (userOptional.isPresent()) {
             openUserPage(userOptional.get(), req, resp);
         } else {
-           showError(req, resp);
+            showError(req, resp);
         }
         out.close();
     }
 
-    private Optional<User> retrieveUserFromDatabase(String email, String password){
+    private Optional<User> retrieveUserFromDatabase(String email, String password) {
         UserDaoInterface userDao = new UserDao();
         return userDao.selectByEmailPassword(email, password);
     }
@@ -44,17 +44,17 @@ public class LoginController extends HttpServlet {
     private void openUserPage(User user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String url = getUrl(user);
         RequestDispatcher rd = req.getRequestDispatcher(url);
-        req.getSession().setAttribute(Constants.USER_ID,user.getId());
+        req.getSession().setAttribute(Constants.USER_ID, user.getId());
         rd.forward(req, resp);
     }
 
     private void showError(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher rd = req.getRequestDispatcher(Constants.LOGIN_URL);
-        req.getSession().setAttribute("errorMessage", ViewMessages.EMAIL_AND_PASSWORD_ERROR);
+        req.getSession().setAttribute("errorLoginMessage", ViewMessages.EMAIL_AND_PASSWORD_ERROR);
         rd.include(req, resp);
     }
 
-    private String getUrl(User user){
+    private String getUrl(User user) {
         if (user.isAdmin())
             return Constants.MAIN_ADMIN_URL;
         else
