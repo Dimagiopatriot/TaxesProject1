@@ -26,15 +26,15 @@ public class RegisterController extends HttpServlet {
         String password = request.getParameter(Constants.PASSWORD_FIELD);
 
         boolean result = false;
-        try {
-            result = saveUserToDatabase(email, password);
-        } catch (DaoException e) {
-            e.printStackTrace();
+        if (!isUserRegistered(email, password)){
+            result = registerUser(email, password);
+        } else {
+            showMessage(out, ViewMessages.USER_REGISTERED_BEFORE_ERROR, Constants.MAIN_GUEST_URL);
         }
         if (result) {
-            showCongratulation(out);
+            showMessage(out, ViewMessages.REGISTER_CONGRATULATION, Constants.MAIN_USER_URL);
         } else {
-            showError(out);
+            showMessage(out, ViewMessages.REGISTER_ERROR, Constants.MAIN_GUEST_URL);
         }
         out.close();
     }
@@ -45,14 +45,23 @@ public class RegisterController extends HttpServlet {
         return userDao.insert(registeredUser);
     }
 
-    private void showCongratulation(PrintWriter out){
-        out.print(ViewMessages.REGISTER_CONGRATULATION);
-        out.print("<br/><br/><a href=\"" + Constants.MAIN_USER_URL + "\">Перейти на головну</a>");
+    private boolean isUserRegistered(String email, String password) {
+        UserDaoInterface userDao = new UserDao();
+        return userDao.selectByEmailPassword(email, password).isPresent();
     }
 
-    private void showError(PrintWriter out){
-        out.print(ViewMessages.REGISTER_ERROR);
-        out.print("<br/><br/><a href=\""+ Constants.MAIN_GUEST_URL + "\">Перейти на головну</a>");
+    private boolean registerUser(String email, String password){
+        try {
+            return saveUserToDatabase(email, password);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void showMessage(PrintWriter out, String msg, String url){
+        out.print(msg);
+        out.print("<br/><br/><a href=\"" + url + "\">Перейти на головну</a>");
     }
 }
 
