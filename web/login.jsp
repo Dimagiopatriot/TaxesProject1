@@ -17,7 +17,7 @@
     Пароль: <input type="password" name="userPass"/><br/><br/>
     <input type="submit" value="Увійти"/>
     <br/><br/>
-    ${sessionScope.get("errorLoginMessage")}
+    ${sessionScope.get("errorMessage")}
 </form>
 </body>
 </html>

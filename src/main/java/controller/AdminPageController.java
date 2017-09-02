@@ -53,10 +53,10 @@ public class AdminPageController extends HttpServlet {
     }
 
     private void updateTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
-        if (!taxDao.updateTaxByName(tax)){ insertTaInDatabase(tax, taxDao);}
+        if (!taxDao.updateTaxByName(tax)){ insertTaxInDatabase(tax, taxDao);}
     }
 
-    private void insertTaInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
+    private void insertTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
         taxDao.insert(tax);
     }
 

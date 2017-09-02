@@ -28,4 +28,5 @@ public interface Constants {
     String MAIN_ADMIN_URL = "main_admin.jsp";
     String LOGIN_URL = "login.jsp";
     String MAIN_GUEST_URL = "main_guest.jsp";
+    String REGISTER_URL = "register.jsp";
 }

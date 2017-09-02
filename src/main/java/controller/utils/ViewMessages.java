@@ -6,6 +6,8 @@ public interface ViewMessages {
     String REGISTER_CONGRATULATION = "Ви зареєстровані!!";
     String REGISTER_ERROR = "На жаль, виникла помилка. Спробуйте ще раз.";
     String USER_REGISTERED_BEFORE_ERROR = "Такий користувач вже зареєстрований";
+    String CHECK_EMAIL_REG_EX_ERROR = "Email не підходить";
+    String CHECK_PASSWORD_REG_EX_ERROR = "Пароль не підходить";
 
     String WORK_TAX_FOR_PAYING = "Ваш податок від заробітку ";
     String WORK_ADD_TAX_FOR_PAYING = "Ваш податок від додаткового заробітку ";

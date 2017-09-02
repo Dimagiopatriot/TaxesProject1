@@ -73,28 +73,28 @@
 Введіть ваші данні тут для їх обробки:
 <form action="RegisteredUser" method="post">
     З/п з основної роботи в місяць: <input type="number" required min="0" step="0.01" name="work"
-                                           value="<%incomeRetrieve.retrieveIncomeValueByType(WORK_INCOME_NAME);%>"/><br/><br/>
+                                           value="<%=incomeRetrieve.retrieveIncomeValueByType(WORK_INCOME_NAME)%>"/><br/><br/>
     З/п з додаткової роботи в місяць: <input type="number" required min="0" step="0.01" name="work_add"
-                                             value="<%incomeRetrieve.retrieveIncomeValueByType(WORK_ADD_INCOME_NAME);%>"/><br/><br/>
+                                             value="<%=incomeRetrieve.retrieveIncomeValueByType(WORK_ADD_INCOME_NAME)%>"/><br/><br/>
     Сума грошей, отриманих як авторські винагороди, за рік: <input type="number" required step="0.01" min="0"
                                                                    name="reward"
-                                                                   value="<%incomeRetrieve.retrieveIncomeValueByType(REWARD_INCOME_NAME);%>"/><br/><br/>
+                                                                   value="<%=incomeRetrieve.retrieveIncomeValueByType(REWARD_INCOME_NAME)%>"/><br/><br/>
     Сума грошей, отриманих від продажі майна, за рік: <input type="number" step="0.01" min="0"
                                                              name="property"
-                                                             value="<%incomeRetrieve.retrieveIncomeValueByType(PROPERTY_INCOME_NAME);%>"/><br/><br/>
+                                                             value="<%=incomeRetrieve.retrieveIncomeValueByType(PROPERTY_INCOME_NAME)%>"/><br/><br/>
     Сума грошей і майна у грошовому еквіваленті, отриманих як подарунок, за рік: <input type="number" required
                                                                                         step="0.01" min="0"
                                                                                         name="gifts"
-                                                                                        value="<%incomeRetrieve.retrieveIncomeValueByType(GIFTS_INCOME_NAME);%>"/><br/><br/>
+                                                                                        value="<%=incomeRetrieve.retrieveIncomeValueByType(GIFTS_INCOME_NAME)%>"/><br/><br/>
     Сума грошей, отриманих як переказ з-за кордону, за рік: <input type="number" required min="0" step="0.01"
                                                                    name="transfer"
-                                                                   value="<%incomeRetrieve.retrieveIncomeValueByType(TRANSFER_INCOME_NAME);%>"/><br/><br/>
+                                                                   value="<%=incomeRetrieve.retrieveIncomeValueByType(TRANSFER_INCOME_NAME)%>"/><br/><br/>
     Сума грошей, отриманих як пільги на дітей, за рік: <input type="number" required min="0" step="0.01"
                                                               name="children_privileges"
-                                                              value="<%incomeRetrieve.retrieveIncomeValueByType(CHILDREN_PRIVILEGES_INCOME_NAME);%>"/><br/><br/>
+                                                              value="<%=incomeRetrieve.retrieveIncomeValueByType(CHILDREN_PRIVILEGES_INCOME_NAME)%>"/><br/><br/>
     Сума грошей, отриманих як матеріальна допомога, за рік: <input type="number" required min="0" step="0.01"
                                                                    name="material_aid"
-                                                                   value="<%incomeRetrieve.retrieveIncomeValueByType(MATERIAL_AID_INCOME_NAME);%>"/><br/><br/>
+                                                                   value="<%=incomeRetrieve.retrieveIncomeValueByType(MATERIAL_AID_INCOME_NAME)%>"/><br/><br/>
     <input type="submit" value="Розрахувати і зберегти"/><br/><br/>
     ${sessionScope.get("taxesResult")}
 </form>

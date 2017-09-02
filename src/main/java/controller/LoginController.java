@@ -1,6 +1,7 @@
 package controller;
 
 import controller.utils.Constants;
+import controller.utils.RegEx;
 import controller.utils.ViewMessages;
 import model.dao.UserDaoInterface;
 import model.dao.impl.UserDao;
@@ -26,19 +27,36 @@ public class LoginController extends HttpServlet {
         String email = req.getParameter(Constants.EMAIL_FIELD);
         String password = req.getParameter(Constants.PASSWORD_FIELD);
 
+        validation(email, password, req, resp);
+        out.close();
+    }
+
+    private void checkUserInDatabase(String email, String password, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<User> userOptional = retrieveUserFromDatabase(email, password);
 
         if (userOptional.isPresent()) {
             openUserPage(userOptional.get(), req, resp);
         } else {
-            showError(req, resp);
+            showError(req, resp, ViewMessages.EMAIL_AND_PASSWORD_ERROR);
         }
-        out.close();
     }
 
     private Optional<User> retrieveUserFromDatabase(String email, String password) {
         UserDaoInterface userDao = new UserDao();
         return userDao.selectByEmailPassword(email, password);
+    }
+
+    private void validation(String email, String password, HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (!RegEx.validateEmail(email)) {
+            showError(request, response, ViewMessages.CHECK_EMAIL_REG_EX_ERROR);
+        }
+        if (!RegEx.validatePassword(password)) {
+            showError(request, response, ViewMessages.CHECK_PASSWORD_REG_EX_ERROR);
+        }
+        if (RegEx.validateEmail(email) && RegEx.validatePassword(password)) {
+            checkUserInDatabase(email, password, request, response);
+        }
     }
 
     private void openUserPage(User user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -48,9 +66,9 @@ public class LoginController extends HttpServlet {
         rd.forward(req, resp);
     }
 
-    private void showError(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void showError(HttpServletRequest req, HttpServletResponse resp, String errorMessage) throws ServletException, IOException {
         RequestDispatcher rd = req.getRequestDispatcher(Constants.LOGIN_URL);
-        req.getSession().setAttribute("errorLoginMessage", ViewMessages.EMAIL_AND_PASSWORD_ERROR);
+        req.getSession().setAttribute("errorMessage", errorMessage);
         rd.include(req, resp);
     }
 

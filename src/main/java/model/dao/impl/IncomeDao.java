@@ -19,8 +19,8 @@ public class IncomeDao implements IncomeDaoInterface {
     private static final String DELETE_QUERY = "DELETE from firstproject.income WHERE id=?;";
     private static final String UPDATE_QUERY = "UPDATE firstproject.income SET name=?, isPerMonth=?, income=?, userId=?, " +
             "taxId=? WHERE id=?;";
-    private static final String UPDATE_QUERY_BY_USER_ID = "UPDATE firstproject.income SET name=?, isPerMonth=?, income=?, " +
-            "taxId=? WHERE userId=?;";
+    private static final String UPDATE_QUERY_BY_USER_ID = "UPDATE firstproject.income SET isPerMonth=?, income=?, " +
+            "taxId=? WHERE userId=? AND name=?";
     private static final String INSERT_QUERY = "INSERT INTO firstproject.income(name, isPerMonth, income, userId, taxId) " +
             "VALUES(?, ?, ?, ?, ?);";
     private static final String SELECT_QUERY = "SELECT * FROM firstproject.income WHERE id=?;";
@@ -83,6 +83,7 @@ public class IncomeDao implements IncomeDaoInterface {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
+            resultSet.next();
             income = Optional.of(buildIncome(resultSet));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,8 +121,8 @@ public class IncomeDao implements IncomeDaoInterface {
 
             statement.setBoolean(1, income.isPerMonth());
             statement.setDouble(2, income.getIncome());
-            statement.setInt(3, income.getUserId());
-            statement.setInt(4, income.getTaxId());
+            statement.setInt(3, income.getTaxId());
+            statement.setInt(4, income.getUserId());
             statement.setString(5, income.getName());
             updatedRow = statement.executeUpdate();
         } catch (SQLException e) {
@@ -132,7 +133,6 @@ public class IncomeDao implements IncomeDaoInterface {
     }
 
     private Income buildIncome(ResultSet resultSet) throws SQLException {
-        resultSet.next();
         return new IncomeBuilder().setId(resultSet.getInt(1))
                 .setName(resultSet.getString(2))
                 .setIsPerMonth(resultSet.getBoolean(3))
