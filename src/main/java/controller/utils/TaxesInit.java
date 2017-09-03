@@ -30,7 +30,7 @@ public class TaxesInit {
 
             for (Tax tax : taxes) {
                 try {
-                    updateTaxInDatabase(tax, taxDao);
+                    selectTaxInDatabase(tax, taxDao);
                 } catch (DaoException e) {
                     e.printStackTrace();
                 }
@@ -48,8 +48,8 @@ public class TaxesInit {
                 .createTax();
     }
 
-    private static void updateTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
-        if (!taxDao.updateTaxByName(tax)){ insertTaxInDatabase(tax, taxDao);}
+    private static void selectTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
+        if (!taxDao.selectByName(tax.getName()).isPresent()){ insertTaxInDatabase(tax, taxDao);}
     }
 
     private static void insertTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {

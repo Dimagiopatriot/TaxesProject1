@@ -95,8 +95,8 @@
     Сума грошей, отриманих як матеріальна допомога, за рік: <input type="number" required min="0" step="0.01"
                                                                    name="material_aid"
                                                                    value="<%=incomeRetrieve.retrieveIncomeValueByType(MATERIAL_AID_INCOME_NAME)%>"/><br/><br/>
-    <input type="submit" value="Розрахувати і зберегти"/><br/><br/>
-    ${sessionScope.get("taxesResult")}
+    <input type="submit" value="Розрахувати і зберегти"/>
 </form>
+${sessionScope.get("taxesResult")}
 </body>
 </html>

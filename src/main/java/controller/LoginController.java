@@ -26,6 +26,7 @@ public class LoginController extends HttpServlet {
         PrintWriter out = resp.getWriter();
         String email = req.getParameter(Constants.EMAIL_FIELD);
         String password = req.getParameter(Constants.PASSWORD_FIELD);
+        req.getSession().setAttribute("taxesResult", "");
 
         validation(email, password, req, resp);
         out.close();
