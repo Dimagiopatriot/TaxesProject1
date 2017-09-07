@@ -6,7 +6,7 @@
     <title>Реєстрація</title>
 </head>
 <body>
-<form action="/Register" method="post">
+<form action="Register" method="post">
 
     <%TaxesInit.createDefaultTaxesInDatabase();%>
 
