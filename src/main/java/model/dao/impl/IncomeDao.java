@@ -26,7 +26,16 @@ public class IncomeDao implements IncomeDaoInterface {
     private static final String SELECT_QUERY = "SELECT * FROM firstproject.income WHERE id=?;";
     private static final String SELECT_EMAIL_PASS_QUERY = "SELECT * FROM firstproject.income WHERE userId=?";
 
-    public boolean delete(int id){
+    private static class Holder {
+        static final IncomeDao INSTANCE = new IncomeDao();
+    }
+
+    public static IncomeDao getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    @Override
+    public boolean deleteByID(int id){
         return delete(id, DELETE_QUERY);
     }
 

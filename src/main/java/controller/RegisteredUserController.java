@@ -4,13 +4,12 @@ import controller.utils.Constants;
 import controller.utils.ResultCalculatingPresenter;
 import controller.utils.TaxRetrieve;
 import controller.utils.ViewMessages;
-import controller.utils.tax_calculator.TaxCalculator;
-import controller.utils.tax_calculator.TaxCalculatorInterface;
-import model.dao.IncomeDaoInterface;
 import model.dao.exceptions.DaoException;
-import model.dao.impl.IncomeDao;
 import model.entities.incomes.Income;
 import model.entities.incomes.IncomeBuilder;
+import model.entities.taxes.calculator.TaxCalculator;
+import model.entities.taxes.calculator.TaxCalculatorInterface;
+import model.service.IncomeService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,8 +39,9 @@ public class RegisteredUserController extends HttpServlet {
         Income materialAid = createIncome(MATERIAL_AID_INCOME_NAME, MATERIAL_AID_TAX_NAME, req);
         List<Income> userIncomes = Arrays.asList(mainWork, additionalWork, reward, property, gifts, transfer,
                 childrenPrivileges, materialAid);
+        IncomeService incomeService = IncomeService.getInstance();
         try {
-            updateIncomeList(userIncomes);
+            incomeService.updateIncomeList(userIncomes);
         } catch (DaoException e) {
             e.printStackTrace();
         }
@@ -98,23 +98,6 @@ public class RegisteredUserController extends HttpServlet {
         }
         req.getSession().setAttribute("taxesResult", result.toString());
         rd.include(req, response);
-    }
-
-    private void updateIncomeList(List<Income> incomes) throws DaoException {
-        IncomeDaoInterface incomeDao = new IncomeDao();
-        for (Income income : incomes) {
-            updateIncomeInDatabase(income, incomeDao);
-        }
-    }
-
-    private void updateIncomeInDatabase(Income income, IncomeDaoInterface incomeDao) throws DaoException {
-        if (!incomeDao.updateIncomeByUserID(income)) {
-            insertTaxInDatabase(income, incomeDao);
-        }
-    }
-
-    private void insertTaxInDatabase(Income income, IncomeDaoInterface incomeDao) throws DaoException {
-        incomeDao.insert(income);
     }
 
     private boolean hasPerMonth(String incomeType) {

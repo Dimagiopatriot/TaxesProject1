@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface UserDaoInterface extends GenericDao<User> {
 
     Optional<User> selectByEmailPassword(String email, String password);
+    boolean deleteByID(int id);
 }

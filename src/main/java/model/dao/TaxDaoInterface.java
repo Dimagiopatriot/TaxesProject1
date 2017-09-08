@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface TaxDaoInterface extends GenericDao<Tax> {
     boolean updateTaxByName(Tax tax) throws DaoException;
+    boolean deleteByID(int id);
     void updateAllTaxes(List<Tax> taxList) throws DaoException;
     void updateAllTaxesByName(List<Tax> taxList) throws DaoException;
 

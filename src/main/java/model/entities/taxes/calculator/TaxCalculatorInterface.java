@@ -1,4 +1,4 @@
-package controller.utils.tax_calculator;
+package model.entities.taxes.calculator;
 
 import model.entities.incomes.Income;
 

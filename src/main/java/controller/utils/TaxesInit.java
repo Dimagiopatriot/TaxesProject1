@@ -1,10 +1,9 @@
 package controller.utils;
 
-import model.dao.TaxDaoInterface;
 import model.dao.exceptions.DaoException;
-import model.dao.impl.TaxDao;
 import model.entities.taxes.Tax;
 import model.entities.taxes.TaxBuilder;
+import model.service.TaxService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +17,6 @@ public class TaxesInit {
         if (ourInstance == null){
 
             ourInstance = new TaxesInit();
-            TaxDaoInterface taxDao = new TaxDao();
             Tax work = createTax(WORK_TAX_NAME);
             Tax reward = createTax(REWARD_TAX_NAME);
             Tax property = createTax(PROPERTY_TAX_NAME);
@@ -28,9 +26,11 @@ public class TaxesInit {
             Tax materialAid = createTax(MATERIAL_AID_TAX_NAME);
             List<Tax> taxes = Arrays.asList(work, reward, property, gifts, transfer, childrenPrivileges, materialAid);
 
+            TaxService service = TaxService.getInstance();
+
             for (Tax tax : taxes) {
                 try {
-                    selectTaxInDatabase(tax, taxDao);
+                    service.selectTaxIfExist(tax);
                 } catch (DaoException e) {
                     e.printStackTrace();
                 }
@@ -46,13 +46,5 @@ public class TaxesInit {
                 .setName(type)
                 .setTaxPercent(0.)
                 .createTax();
-    }
-
-    private static void selectTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
-        if (!taxDao.selectByName(tax.getName()).isPresent()){ insertTaxInDatabase(tax, taxDao);}
-    }
-
-    private static void insertTaxInDatabase(Tax tax, TaxDaoInterface taxDao) throws DaoException {
-        taxDao.insert(tax);
     }
 }

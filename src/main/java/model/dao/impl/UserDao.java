@@ -19,7 +19,16 @@ public class UserDao implements UserDaoInterface {
     private static final String SELECT_QUERY = "SELECT * FROM firstproject.user WHERE id=?;";
     private static final String SELECT_EMAIL_PASS_QUERY = "SELECT * FROM firstproject.user WHERE email=? AND password=?";
 
-    public boolean delete(int id){
+    private static class Holder {
+        static final UserDao INSTANCE = new UserDao();
+    }
+
+    public static UserDao getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    @Override
+    public boolean deleteByID(int id){
         return delete(id, DELETE_QUERY);
     }
 

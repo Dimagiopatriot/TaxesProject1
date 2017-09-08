@@ -3,9 +3,8 @@ package controller;
 import controller.utils.Constants;
 import controller.utils.RegEx;
 import controller.utils.ViewMessages;
-import model.dao.UserDaoInterface;
-import model.dao.impl.UserDao;
 import model.entities.users.User;
+import model.service.UserService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,13 +26,15 @@ public class LoginController extends HttpServlet {
         String email = req.getParameter(Constants.EMAIL_FIELD);
         String password = req.getParameter(Constants.PASSWORD_FIELD);
         req.getSession().setAttribute("taxesResult", "");
+        UserService userService = UserService.getInstance();
 
-        validation(email, password, req, resp);
+        validation(userService, email, password, req, resp);
         out.close();
     }
 
-    private void checkUserInDatabase(String email, String password, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<User> userOptional = retrieveUserFromDatabase(email, password);
+    private void checkUserInDatabase(UserService service, String email, String password,
+                                     HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Optional<User> userOptional = service.selectByEmailPassword(email, password);
 
         if (userOptional.isPresent()) {
             openUserPage(userOptional.get(), req, resp);
@@ -42,13 +43,8 @@ public class LoginController extends HttpServlet {
         }
     }
 
-    private Optional<User> retrieveUserFromDatabase(String email, String password) {
-        UserDaoInterface userDao = new UserDao();
-        return userDao.selectByEmailPassword(email, password);
-    }
-
-    private void validation(String email, String password, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void validation(UserService service, String email, String password, HttpServletRequest request,
+                            HttpServletResponse response) throws ServletException, IOException {
         if (!RegEx.validateEmail(email)) {
             showError(request, response, ViewMessages.CHECK_EMAIL_REG_EX_ERROR);
         }
@@ -56,7 +52,7 @@ public class LoginController extends HttpServlet {
             showError(request, response, ViewMessages.CHECK_PASSWORD_REG_EX_ERROR);
         }
         if (RegEx.validateEmail(email) && RegEx.validatePassword(password)) {
-            checkUserInDatabase(email, password, request, response);
+            checkUserInDatabase(service, email, password, request, response);
         }
     }
 

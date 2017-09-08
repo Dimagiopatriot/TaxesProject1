@@ -11,4 +11,5 @@ import java.util.List;
 public interface IncomeDaoInterface extends GenericDao<Income> {
     List<Income> selectAllIncomesForUser(int userId) throws DaoException;
     boolean updateIncomeByUserID(Income income) throws DaoException;
+    boolean deleteByID(int id);
 }

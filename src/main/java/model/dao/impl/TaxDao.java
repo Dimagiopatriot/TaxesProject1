@@ -22,7 +22,16 @@ public class TaxDao implements TaxDaoInterface {
     private static final String SELECT_QUERY = "SELECT * FROM firstproject.tax WHERE id=?;";
     private static final String SELECT_QUERY_BY_NAME = "SELECT * FROM firstproject.tax WHERE name=?;";
 
-    public boolean delete(int id){
+    private static class Holder {
+        static final TaxDao INSTANCE = new TaxDao();
+    }
+
+    public static TaxDao getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    @Override
+    public boolean deleteByID(int id){
         return delete(id, DELETE_QUERY);
     }
 

@@ -1,9 +1,8 @@
 package controller.utils;
 
-import model.dao.IncomeDaoInterface;
 import model.dao.exceptions.DaoException;
-import model.dao.impl.IncomeDao;
 import model.entities.incomes.Income;
+import model.service.IncomeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +16,9 @@ public class IncomeRetrieve {
     }
 
     private void retrieveIncomesByUserId(int userId){
-        IncomeDaoInterface incomeDao = new IncomeDao();
+        IncomeService service = IncomeService.getInstance();
         try {
-            userIncomes = incomeDao.selectAllIncomesForUser(userId);
+            userIncomes = service.selectAllIncomesForUser(userId);
         } catch (DaoException e) {
             e.printStackTrace();
         }

@@ -1,19 +1,18 @@
 package controller.utils;
 
-import model.dao.TaxDaoInterface;
 import model.dao.exceptions.DaoException;
-import model.dao.impl.TaxDao;
 import model.entities.taxes.Tax;
+import model.service.TaxService;
 
 import java.util.Optional;
 
 public class TaxRetrieve {
 
-    private TaxDaoInterface taxDao = new TaxDao();
+    private TaxService service = TaxService.getInstance();
 
     public double retrieveTaxPercentFromDatabase(String taxType)  {
         try {
-            return checkTaxPercent(taxDao.selectByName(taxType));
+            return checkTaxPercent(service.selectByName(taxType));
         } catch (DaoException e) {
             e.printStackTrace();
         }
@@ -23,20 +22,14 @@ public class TaxRetrieve {
     public int retrieveTaxIdFromDatabase(String taxType) {
         Optional<Tax> tax = Optional.empty();
         try {
-            tax = taxDao.selectByName(taxType);
+            tax = service.selectByName(taxType);
         } catch (DaoException e) {
             e.printStackTrace();
         }
-        if (tax.isPresent())
-            return tax.get().getId();
-        else
-            return 0;
+        return tax.map(Tax::getId).orElse(0);
     }
 
     private double checkTaxPercent(Optional<Tax> tax) {
-        if (tax.isPresent()) {
-            return tax.get().getTaxPercent();
-        }
-        return 0.;
+        return tax.map(Tax::getTaxPercent).orElse(0.);
     }
 }
