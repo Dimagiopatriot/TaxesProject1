@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class User {
 
-    Integer id;
+    private Integer id;
     private String email;
     private String password;
 
-    boolean isAdmin;
+    private boolean isAdmin;
 
     private List<Income> userIncomes = new ArrayList<>();
 

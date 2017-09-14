@@ -5,10 +5,10 @@ package model.entities.users;
  */
 public class UserBuilder {
 
-    Integer id = 0;
-    String email = "example@email.com";
-    String password = "111111";
-    boolean isAdmin = false;
+    private Integer id = 0;
+    private String email = "example@email.com";
+    private String password = "111111";
+    private boolean isAdmin = false;
 
     public UserBuilder setId(int id) {
         this.id = id;
